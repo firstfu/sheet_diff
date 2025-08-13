@@ -17,6 +17,9 @@ export interface DiffStats {
   modifiedRows: number;
   addedRows: number;
   deletedRows: number;
+  oldFileRecords: number;
+  newFileRecords: number;
+  totalRecords: number;
 }
 
 export interface RowDifference {

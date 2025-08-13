@@ -43,6 +43,24 @@ export function DiffStats({ stats }: DiffStatsProps) {
     }
   ];
 
+  const recordItems = [
+    {
+      label: '舊檔案筆數',
+      value: stats.oldFileRecords,
+      subtext: '原始資料'
+    },
+    {
+      label: '新檔案筆數',
+      value: stats.newFileRecords,
+      subtext: '更新資料'
+    },
+    {
+      label: '總資料筆數',
+      value: stats.totalRecords,
+      subtext: '合計筆數'
+    }
+  ];
+
   const impactLevel = stats.totalRows === 0 ? 'none' : 
     stats.totalRows < 10 ? 'low' : 
     stats.totalRows < 100 ? 'medium' : 'high';
@@ -62,69 +80,100 @@ export function DiffStats({ stats }: DiffStatsProps) {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      {items.map((item, index) => {
-        const Icon = item.icon;
-        return (
-          <div 
-            key={item.label} 
-            className="group relative bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transform hover:-translate-y-1"
-          >
-            {/* Background Gradient */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`}></div>
-            
-            {/* Icon */}
-            <div className={`relative mb-4 ${item.lightBg} rounded-xl p-3 w-fit`}>
-              <Icon className={`h-6 w-6 bg-gradient-to-r ${item.gradient} bg-clip-text text-transparent`} />
+    <div className="space-y-8 mb-8">
+      {/* Record Count Statistics */}
+      <div>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">資料筆數統計</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {recordItems.map((item) => (
+            <div 
+              key={item.label}
+              className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-md border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-200"
+            >
+              <div className="text-center">
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  {item.label}
+                </p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                  {item.value.toLocaleString()}
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  {item.subtext}
+                </p>
+              </div>
             </div>
-            
-            {/* Content */}
-            <div className="relative">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-                {item.label}
-              </p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
-                {item.value.toLocaleString()}
-              </p>
-              
-              {/* Progress Bar */}
-              {index > 0 && stats.totalRows > 0 && (
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs text-gray-500 dark:text-gray-400">佔比</span>
-                    <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
-                      {item.percentage.toFixed(1)}%
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                    <div
-                      className={`bg-gradient-to-r ${item.gradient} h-2 rounded-full transition-all duration-500 ease-out`}
-                      style={{ width: `${Math.min(item.percentage, 100)}%` }}
-                    />
-                  </div>
-                </div>
-              )}
-              
-              {/* Impact Level for Total */}
-              {index === 0 && (
-                <div className="flex items-center space-x-2 mt-3">
-                  <Activity className="h-4 w-4 text-gray-400" />
-                  <span className={`text-xs font-medium ${impactColors[impactLevel]}`}>
-                    {impactLabels[impactLevel]}
-                  </span>
-                </div>
-              )}
-            </div>
+          ))}
+        </div>
+      </div>
 
-            {/* Animated Border */}
-            <div className="absolute inset-0 rounded-2xl border-2 border-transparent bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300" style={{
-              background: `linear-gradient(45deg, ${item.gradient.includes('blue') ? '#3b82f6' : item.gradient.includes('amber') ? '#f59e0b' : item.gradient.includes('emerald') ? '#10b981' : '#ef4444'}, transparent, transparent)`,
-              backgroundSize: '200% 200%',
-              animation: 'gradient-shift 3s ease infinite'
-            }}></div>
-          </div>
-        );
-      })}
+      {/* Difference Statistics */}
+      <div>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">變更統計</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {items.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <div 
+                key={item.label} 
+                className="group relative bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transform hover:-translate-y-1"
+              >
+                {/* Background Gradient */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`}></div>
+                
+                {/* Icon */}
+                <div className={`relative mb-4 ${item.lightBg} rounded-xl p-3 w-fit`}>
+                  <Icon className={`h-6 w-6 bg-gradient-to-r ${item.gradient} bg-clip-text text-transparent`} />
+                </div>
+                
+                {/* Content */}
+                <div className="relative">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+                    {item.label}
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                    {item.value.toLocaleString()}
+                  </p>
+                  
+                  {/* Progress Bar */}
+                  {index > 0 && stats.totalRows > 0 && (
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs text-gray-500 dark:text-gray-400">佔比</span>
+                        <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                          {item.percentage.toFixed(1)}%
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div
+                          className={`bg-gradient-to-r ${item.gradient} h-2 rounded-full transition-all duration-500 ease-out`}
+                          style={{ width: `${Math.min(item.percentage, 100)}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Impact Level for Total */}
+                  {index === 0 && (
+                    <div className="flex items-center space-x-2 mt-3">
+                      <Activity className="h-4 w-4 text-gray-400" />
+                      <span className={`text-xs font-medium ${impactColors[impactLevel]}`}>
+                        {impactLabels[impactLevel]}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Animated Border */}
+                <div className="absolute inset-0 rounded-2xl border-2 border-transparent bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300" style={{
+                  background: `linear-gradient(45deg, ${item.gradient.includes('blue') ? '#3b82f6' : item.gradient.includes('amber') ? '#f59e0b' : item.gradient.includes('emerald') ? '#10b981' : '#ef4444'}, transparent, transparent)`,
+                  backgroundSize: '200% 200%',
+                  animation: 'gradient-shift 3s ease infinite'
+                }}></div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
       
       <style jsx>{`
         @keyframes gradient-shift {

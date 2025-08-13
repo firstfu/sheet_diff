@@ -13,7 +13,7 @@ export class DiffEngine {
     const newIndex = this.buildIndex(alignedData.newData);
     
     const differences = this.calculateDifferences(oldIndex, newIndex, alignedData.headers);
-    const stats = this.calculateStats(differences);
+    const stats = this.calculateStats(differences, oldFile.rowCount, newFile.rowCount);
 
     return {
       stats,
@@ -157,7 +157,7 @@ export class DiffEngine {
     return originalData;
   }
 
-  private calculateStats(differences: RowDifference[]): DiffStats {
+  private calculateStats(differences: RowDifference[], oldFileRecords: number, newFileRecords: number): DiffStats {
     let modifiedRows = 0;
     let addedRows = 0;
     let deletedRows = 0;
@@ -182,7 +182,10 @@ export class DiffEngine {
       totalRows: modifiedRows + addedRows + deletedRows,
       modifiedRows,
       addedRows,
-      deletedRows
+      deletedRows,
+      oldFileRecords,
+      newFileRecords,
+      totalRecords: oldFileRecords + newFileRecords
     };
   }
 
