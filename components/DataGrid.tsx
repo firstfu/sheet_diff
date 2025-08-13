@@ -67,6 +67,15 @@ const StatusCellRenderer = (params: ICellRendererParams) => {
       </div>
     );
   }
+
+  if (rowType === 'normal') {
+    return (
+      <div className="flex items-center space-x-2 px-2 py-1 bg-gradient-to-r from-gray-50 to-slate-50 dark:from-gray-900/20 dark:to-slate-900/20 rounded-full border border-gray-200 dark:border-gray-600">
+        <div className="h-3 w-3 rounded-full bg-gray-400 dark:bg-gray-500"></div>
+        <span className="text-xs font-medium text-gray-600 dark:text-gray-400">正常</span>
+      </div>
+    );
+  }
   
   return null;
 };
@@ -95,11 +104,13 @@ export function DataGrid({ diffResult, filterState }: DataGridProps) {
   const rowData = useMemo(() => {
     let rows = diffResult.differences;
 
+    // 如果開啟「僅顯示有差異的資料」，篩選出有差異的資料
     if (filterState.showOnlyDifferences) {
       rows = rows.filter(row => ['modified', 'added', 'deleted'].includes(row.type));
     }
 
-    if (filterState.selectedDiffTypes.length < 3) {
+    // 如果在「僅顯示有差異的資料」模式下，再根據選擇的差異類型進行篩選
+    if (filterState.showOnlyDifferences && filterState.selectedDiffTypes.length < 3) {
       rows = rows.filter(row => 
         filterState.selectedDiffTypes.includes(row.type as 'modified' | 'added' | 'deleted')
       );
@@ -228,11 +239,17 @@ export function DataGrid({ diffResult, filterState }: DataGridProps) {
           <div className="flex items-center space-x-3">
             <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
             <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              共 {rowData.length.toLocaleString()} 筆變更記錄
+              共 {rowData.length.toLocaleString()} 筆{filterState.showOnlyDifferences ? '變更記錄' : '資料記錄'}
             </p>
           </div>
           
           <div className="flex items-center space-x-4 text-xs text-gray-500 dark:text-gray-400">
+            {!filterState.showOnlyDifferences && (
+              <div className="flex items-center space-x-1">
+                <div className="w-3 h-3 rounded-full bg-gray-400"></div>
+                <span>正常</span>
+              </div>
+            )}
             <div className="flex items-center space-x-1">
               <div className="w-3 h-3 rounded-full bg-gradient-to-r from-amber-400 to-orange-500"></div>
               <span>修改</span>

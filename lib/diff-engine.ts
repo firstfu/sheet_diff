@@ -94,6 +94,16 @@ export class DiffEngine {
               changedFields,
               primaryKeyValue: key
             });
+          } else {
+            // 加入未更改的行
+            differences.push({
+              rowIndex: oldEntry.index,
+              type: 'normal',
+              oldData: this.getOriginalData(oldEntry.data, headers),
+              newData: this.getOriginalData(newEntry.data, headers),
+              changedFields: [],
+              primaryKeyValue: key
+            });
           }
         }
       } else {
@@ -163,11 +173,13 @@ export class DiffEngine {
         case 'deleted':
           deletedRows++;
           break;
+        // 'normal' 類型不計入差異統計
       }
     });
 
+    // totalRows 只計算有差異的行數
     return {
-      totalRows: differences.length,
+      totalRows: modifiedRows + addedRows + deletedRows,
       modifiedRows,
       addedRows,
       deletedRows

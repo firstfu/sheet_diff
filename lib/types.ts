@@ -21,7 +21,7 @@ export interface DiffStats {
 
 export interface RowDifference {
   rowIndex: number;
-  type: 'modified' | 'added' | 'deleted';
+  type: 'normal' | 'modified' | 'added' | 'deleted';
   oldData?: Record<string, unknown>;
   newData?: Record<string, unknown>;
   changedFields?: string[];
