@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-此文件為 Claude Code (claude.ai/code) 在此代碼庫中工作時提供指導。
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## 專案概述
 這是一個使用 TypeScript、React 19 和 Tailwind CSS v4 的 Next.js 15.4.6 應用程式。專案使用 create-next-app 初始化，採用 App Router 架構。
