@@ -31,13 +31,18 @@ No test configuration found. When implementing tests, first check for testing re
   - `DiffStats.tsx` - Statistics component for differences
   - `FilterControls.tsx` - Filtering controls
   - `ExportButtons.tsx` - Export functionality buttons
+- `/lib` - Core business logic
+  - `types.ts` - TypeScript type definitions for the entire application
+  - `diff-engine.ts` - Core comparison algorithm and difference calculation
+  - `file-parser.ts` - File parsing utilities for CSV/Excel
+  - `export-utils.ts` - Export functionality for different formats
 - `/public` - Static assets (images, SVGs)
 
 ### Key Technologies
 - **Framework**: Next.js 15.4.6 with App Router
 - **Language**: TypeScript with strict mode enabled
 - **Styling**: Tailwind CSS v4 with PostCSS
-- **UI Components**: Lucide React icons, React Data Grid for spreadsheet display
+- **UI Components**: Lucide React icons, AG Grid Community for spreadsheet display
 - **File Processing**: Papa Parse (CSV), xlsx library (Excel), file-saver for downloads
 - **PDF Generation**: jsPDF with autotable plugin for report exports
 - **Fonts**: Geist and Geist Mono from Google Fonts
@@ -55,7 +60,7 @@ No test configuration found. When implementing tests, first check for testing re
 - **Visual Diff Display**: Custom CSS classes for highlighting added, modified, and deleted rows/cells
 - **Export Capabilities**: Supports CSV, Excel, and PDF export formats
 - **Responsive Design**: Mobile-optimized interface with Chinese language support
-- **Data Grid**: Uses react-data-grid for efficient display of large datasets
+- **Data Grid**: Uses AG Grid Community for efficient display of large datasets
 
 ### Development Notes
 - The application uses Turbopack for faster development builds
@@ -63,3 +68,4 @@ No test configuration found. When implementing tests, first check for testing re
 - Font optimization handled automatically by next/font
 - Custom CSS variables defined for diff visualization in light and dark modes
 - App Router architecture with client-side components for file processing
+- AG Grid Community requires module registration in components that use it
