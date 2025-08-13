@@ -184,6 +184,55 @@ export function CompareResults() {
           <DiffStats stats={diffResult.stats} />
         </div>
 
+        {/* File Comparison Info */}
+        <div className="mb-6">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl shadow-lg">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+                    檔案比對分析
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    以下為兩個檔案間的詳細差異比對結果
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-3">
+                <div className="text-center">
+                  <div className="bg-blue-50 dark:bg-blue-900/20 px-4 py-2 rounded-lg border border-blue-200 dark:border-blue-700/50">
+                    <p className="text-xs text-blue-600 dark:text-blue-400 font-medium mb-1">原始檔案</p>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white truncate max-w-[150px]" title={searchParams.get('oldFilename') || ''}>
+                      {searchParams.get('oldFilename') || '舊檔案'}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full shadow-md">
+                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </div>
+                
+                <div className="text-center">
+                  <div className="bg-green-50 dark:bg-green-900/20 px-4 py-2 rounded-lg border border-green-200 dark:border-green-700/50">
+                    <p className="text-xs text-green-600 dark:text-green-400 font-medium mb-1">更新檔案</p>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white truncate max-w-[150px]" title={searchParams.get('newFilename') || ''}>
+                      {searchParams.get('newFilename') || '新檔案'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Main Content */}
         <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
           {/* Controls Header */}
