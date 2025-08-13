@@ -3,6 +3,17 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* DataDiff 差異視覺化色彩 */
+  --diff-modified: #fff3cd;
+  --diff-added: #d1e7dd;
+  --diff-deleted: #f8d7da;
+  --diff-modified-text: #856404;
+  --diff-added-text: #0f5132;
+  --diff-deleted-text: #842029;
+  --diff-modified-border: #ffeaa7;
+  --diff-added-border: #9ecbcf;
+  --diff-deleted-border: #f1aeb5;
 }
 
 @theme inline {
@@ -16,6 +27,17 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    
+    /* Dark mode 差異視覺化色彩 */
+    --diff-modified: #332701;
+    --diff-added: #0c2e0f;
+    --diff-deleted: #2c0b0e;
+    --diff-modified-text: #d6c659;
+    --diff-added-text: #75b798;
+    --diff-deleted-text: #ea868f;
+    --diff-modified-border: #4a3511;
+    --diff-added-border: #1a4c1f;
+    --diff-deleted-border: #4c1318;
   }
 }
 
@@ -23,4 +45,70 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* React Data Grid 客製化樣式 */
+.rdg {
+  --rdg-color: var(--foreground);
+  --rdg-border-color: #d1d5db;
+  --rdg-summary-border-color: #d1d5db;
+  --rdg-background-color: var(--background);
+  --rdg-header-background-color: #f9fafb;
+  --rdg-row-hover-background-color: #f3f4f6;
+  --rdg-row-selected-background-color: #dbeafe;
+}
+
+.rdg.rdg-dark {
+  --rdg-color: var(--foreground);
+  --rdg-border-color: #374151;
+  --rdg-summary-border-color: #374151;
+  --rdg-background-color: var(--background);
+  --rdg-header-background-color: #1f2937;
+  --rdg-row-hover-background-color: #374151;
+  --rdg-row-selected-background-color: #1e40af;
+}
+
+/* 差異高亮樣式 */
+.rdg-cell-modified {
+  background-color: var(--diff-modified) !important;
+  color: var(--diff-modified-text) !important;
+  border-left: 3px solid var(--diff-modified-border) !important;
+}
+
+.rdg-cell-added {
+  background-color: var(--diff-added) !important;
+  color: var(--diff-added-text) !important;
+  border-left: 3px solid var(--diff-added-border) !important;
+}
+
+.rdg-cell-deleted {
+  background-color: var(--diff-deleted) !important;
+  color: var(--diff-deleted-text) !important;
+  border-left: 3px solid var(--diff-deleted-border) !important;
+  text-decoration: line-through;
+  opacity: 0.8;
+}
+
+/* 表格行樣式 */
+.rdg-row.rdg-row-modified {
+  background-color: var(--diff-modified);
+}
+
+.rdg-row.rdg-row-added {
+  background-color: var(--diff-added);
+}
+
+.rdg-row.rdg-row-deleted {
+  background-color: var(--diff-deleted);
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+  .rdg {
+    font-size: 12px;
+  }
+  
+  .rdg-cell {
+    padding: 4px 6px;
+  }
 }
