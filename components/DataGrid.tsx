@@ -168,6 +168,7 @@ export function DataGrid({ diffResult, filterState }: DataGridProps) {
     <div className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
       <div className="ag-theme-alpine dark:ag-theme-alpine-dark" style={{ height: 'calc(100vh - 450px)', minHeight: '500px' }}>
         <AgGridReact
+          theme="legacy"
           rowData={rowData}
           columnDefs={columnDefs}
           defaultColDef={{
@@ -178,7 +179,6 @@ export function DataGrid({ diffResult, filterState }: DataGridProps) {
             filter: true,
           }}
           enableCellTextSelection={true}
-          enableRangeSelection={true}
           suppressRowClickSelection={true}
           rowSelection="multiple"
           animateRows={true}
