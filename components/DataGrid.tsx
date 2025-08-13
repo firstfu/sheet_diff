@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, useRef } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { ColDef, CellClassParams, ICellRendererParams, ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import { DiffResult, FilterState } from '@/lib/types';
@@ -72,6 +72,8 @@ const StatusCellRenderer = (params: ICellRendererParams) => {
 };
 
 export function DataGrid({ diffResult, filterState }: DataGridProps) {
+  const gridRef = useRef<AgGridReact>(null);
+  
   const getCellClassName = useCallback((rowData: Record<string, unknown>, columnKey: string): string => {
     if (!rowData) return '';
     
@@ -131,7 +133,7 @@ export function DataGrid({ diffResult, filterState }: DataGridProps) {
       cellRenderer: StatusCellRenderer,
       sortable: false,
       filter: false,
-      resizable: false,
+      resizable: true,
       cellClass: (params: CellClassParams) => getCellClassName(params.data, '_status')
     };
 
@@ -189,15 +191,24 @@ export function DataGrid({ diffResult, filterState }: DataGridProps) {
     <div className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
       <div className="ag-theme-alpine dark:ag-theme-alpine-dark" style={{ height: 'calc(100vh - 450px)', minHeight: '500px' }}>
         <AgGridReact
+          ref={gridRef}
           theme="legacy"
           rowData={rowData}
           columnDefs={columnDefs}
           defaultColDef={{
-            flex: 1,
-            minWidth: 100,
             resizable: true,
             sortable: true,
             filter: true,
+            minWidth: 80,
+          }}
+          onFirstDataRendered={(params) => {
+            params.api.sizeColumnsToFit();
+          }}
+          onGridReady={(params) => {
+            // Auto-size all columns to fit content
+            setTimeout(() => {
+              params.api.autoSizeAllColumns();
+            }, 100);
           }}
           enableCellTextSelection={true}
           suppressRowClickSelection={true}
