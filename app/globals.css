@@ -47,41 +47,48 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* React Data Grid 客製化樣式 */
-.rdg {
-  --rdg-color: var(--foreground);
-  --rdg-border-color: #d1d5db;
-  --rdg-summary-border-color: #d1d5db;
-  --rdg-background-color: var(--background);
-  --rdg-header-background-color: #f9fafb;
-  --rdg-row-hover-background-color: #f3f4f6;
-  --rdg-row-selected-background-color: #dbeafe;
+/* AG Grid 客製化樣式 */
+.ag-theme-alpine {
+  --ag-foreground-color: var(--foreground);
+  --ag-background-color: var(--background);
+  --ag-header-background-color: #f9fafb;
+  --ag-header-foreground-color: var(--foreground);
+  --ag-border-color: #d1d5db;
+  --ag-row-hover-color: #f3f4f6;
+  --ag-selected-row-background-color: #dbeafe;
+  --ag-range-selection-background-color: #dbeafe;
+  --ag-cell-horizontal-border: #e5e7eb;
+  --ag-header-height: 48px;
+  --ag-row-height: 40px;
 }
 
-.rdg.rdg-dark {
-  --rdg-color: var(--foreground);
-  --rdg-border-color: #374151;
-  --rdg-summary-border-color: #374151;
-  --rdg-background-color: var(--background);
-  --rdg-header-background-color: #1f2937;
-  --rdg-row-hover-background-color: #374151;
-  --rdg-row-selected-background-color: #1e40af;
+.ag-theme-alpine-dark {
+  --ag-foreground-color: var(--foreground);
+  --ag-background-color: var(--background);
+  --ag-header-background-color: #1f2937;
+  --ag-header-foreground-color: var(--foreground);
+  --ag-border-color: #374151;
+  --ag-row-hover-color: #374151;
+  --ag-selected-row-background-color: #1e40af;
+  --ag-range-selection-background-color: #1e40af;
+  --ag-cell-horizontal-border: #4b5563;
 }
 
-/* 差異高亮樣式 */
-.rdg-cell-modified {
+/* AG Grid 差異高亮樣式 */
+.ag-cell.ag-cell-modified {
   background-color: var(--diff-modified) !important;
   color: var(--diff-modified-text) !important;
   border-left: 3px solid var(--diff-modified-border) !important;
+  font-weight: 500;
 }
 
-.rdg-cell-added {
+.ag-cell.ag-cell-added {
   background-color: var(--diff-added) !important;
   color: var(--diff-added-text) !important;
   border-left: 3px solid var(--diff-added-border) !important;
 }
 
-.rdg-cell-deleted {
+.ag-cell.ag-cell-deleted {
   background-color: var(--diff-deleted) !important;
   color: var(--diff-deleted-text) !important;
   border-left: 3px solid var(--diff-deleted-border) !important;
@@ -89,26 +96,36 @@ body {
   opacity: 0.8;
 }
 
-/* 表格行樣式 */
-.rdg-row.rdg-row-modified {
-  background-color: var(--diff-modified);
+/* AG Grid Excel-like 增強功能 */
+.ag-theme-alpine .ag-header-cell,
+.ag-theme-alpine-dark .ag-header-cell {
+  font-weight: 600;
+  border-right: 1px solid var(--ag-border-color);
 }
 
-.rdg-row.rdg-row-added {
-  background-color: var(--diff-added);
+.ag-theme-alpine .ag-cell,
+.ag-theme-alpine-dark .ag-cell {
+  border-right: 1px solid var(--ag-cell-horizontal-border);
+  display: flex;
+  align-items: center;
 }
 
-.rdg-row.rdg-row-deleted {
-  background-color: var(--diff-deleted);
+.ag-theme-alpine .ag-pinned-left-cols-container,
+.ag-theme-alpine-dark .ag-pinned-left-cols-container {
+  border-right: 2px solid var(--ag-border-color);
 }
 
 /* 響應式調整 */
 @media (max-width: 768px) {
-  .rdg {
+  .ag-theme-alpine,
+  .ag-theme-alpine-dark {
+    --ag-header-height: 40px;
+    --ag-row-height: 36px;
     font-size: 12px;
   }
   
-  .rdg-cell {
+  .ag-theme-alpine .ag-cell,
+  .ag-theme-alpine-dark .ag-cell {
     padding: 4px 6px;
   }
 }
