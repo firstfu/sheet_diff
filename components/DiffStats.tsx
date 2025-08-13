@@ -1,7 +1,7 @@
 'use client';
 
 import { DiffStats as DiffStatsType } from '@/lib/types';
-import { BarChart3, Plus, Minus, Edit3, TrendingUp, Activity } from 'lucide-react';
+import { BarChart3, Plus, Minus, Edit3, Activity } from 'lucide-react';
 
 interface DiffStatsProps {
   stats: DiffStatsType;
