@@ -130,34 +130,35 @@ export function CompareResults() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       {/* Header Section */}
-      <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+      <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50 sticky top-0 z-20 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3 sm:py-4 space-y-3 sm:space-y-0">
+            {/* Left Section */}
+            <div className="flex items-center space-x-3 sm:space-x-4">
               <button
                 onClick={() => router.push('/')}
-                className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="group inline-flex items-center px-3 py-2 sm:px-4 sm:py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/20 border border-transparent hover:border-blue-200 dark:hover:border-blue-700/50"
               >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                返回首頁
+                <ArrowLeft className="h-4 w-4 mr-1.5 sm:mr-2 group-hover:translate-x-[-2px] transition-transform duration-200" />
+                <span className="hidden sm:inline">返回首頁</span>
+                <span className="sm:hidden">返回</span>
               </button>
               
-              <div className="h-6 w-px bg-gray-300 dark:bg-gray-600"></div>
+              <div className="hidden sm:block h-6 w-px bg-gray-300 dark:bg-gray-600"></div>
               
-              <div className="flex items-center space-x-2">
-                <FileCheck className="h-5 w-5 text-green-500" />
-                <span className="text-sm font-medium text-gray-900 dark:text-white">
+              <div className="flex items-center space-x-2 bg-green-50 dark:bg-green-900/20 px-3 py-1.5 rounded-full border border-green-200 dark:border-green-700/50">
+                <div className="relative">
+                  <FileCheck className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 dark:text-green-400" />
+                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                </div>
+                <span className="text-xs sm:text-sm font-medium text-green-700 dark:text-green-300">
                   分析完成
                 </span>
               </div>
             </div>
             
-            <div className="flex items-center space-x-3">
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-medium">{searchParams.get('oldFilename')}</span>
-                <span className="mx-2">vs</span>
-                <span className="font-medium">{searchParams.get('newFilename')}</span>
-              </div>
+            {/* Right Section */}
+            <div className="flex justify-center sm:justify-end">
               <ExportButtons diffResult={diffResult} />
             </div>
           </div>
