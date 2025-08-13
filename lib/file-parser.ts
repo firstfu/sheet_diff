@@ -1,3 +1,14 @@
+/**
+ * 檔案解析工具類
+ * 
+ * 提供多種格式檔案的解析功能：
+ * - CSV 檔案解析（使用 Papa Parse）
+ * - Excel 檔案解析（支援 .xlsx 和 .xls 格式）
+ * - 檔案驗證（格式、大小限制）
+ * - 資料清理和標準化
+ * - Excel 日期序列號處理
+ * - 檔案資訊提取
+ */
 import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 import { ParsedFile } from './types';

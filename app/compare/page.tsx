@@ -1,3 +1,11 @@
+/**
+ * 比較結果頁面
+ * 
+ * 顯示檔案比較分析結果的頁面，功能包括：
+ * - 載入和顯示差異分析結果
+ * - 提供載入中的友好介面
+ * - 使用 Suspense 進行非同步內容處理
+ */
 'use client';
 
 import { CompareResults } from '@/components/CompareResults';

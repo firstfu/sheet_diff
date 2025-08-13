@@ -1,3 +1,13 @@
+/**
+ * 匯出按鈕組件
+ * 
+ * 提供多種格式的報告匯出功能：
+ * - CSV 資料檔匯出
+ * - Excel 工作簿匯出  
+ * - PDF 專業報告匯出
+ * - 互動式選項選單
+ * - 匯出進度指示
+ */
 'use client';
 
 import { useState } from 'react';

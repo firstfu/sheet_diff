@@ -1,3 +1,15 @@
+/**
+ * 差異比較引擎
+ * 
+ * 核心的檔案比較演算法實作：
+ * - 雙檔案差異分析
+ * - 欄位對齊和資料標準化
+ * - 索引建立和比對
+ * - 變更偵測（修改、新增、刪除）
+ * - 統計資料計算
+ * - Web Worker 支援大檔案處理
+ * - 主鍵匹配機制
+ */
 import { ParsedFile, CompareOptions, DiffResult, RowDifference, DiffStats } from './types';
 
 export class DiffEngine {

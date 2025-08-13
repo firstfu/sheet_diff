@@ -1,3 +1,12 @@
+/**
+ * 首頁組件
+ * 
+ * 應用程式的主要入口頁面，提供：
+ * - 品牌展示和產品介紹
+ * - 檔案上傳功能入口
+ * - 功能特色說明
+ * - 響應式設計，支援深色模式
+ */
 'use client';
 
 import { FileUpload } from '@/components/FileUpload';

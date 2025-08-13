@@ -1,3 +1,14 @@
+/**
+ * 匯出管理工具類
+ * 
+ * 提供多種格式的報告匯出功能：
+ * - CSV 格式匯出（UTF-8 BOM 支援）
+ * - Excel 工作簿匯出（含樣式設定）
+ * - PDF 報告匯出（使用 html2canvas 和 jsPDF）
+ * - 差異資料視覺化
+ * - 統計摘要包含
+ * - 中文字體支援
+ */
 // import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';

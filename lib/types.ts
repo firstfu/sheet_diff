@@ -1,3 +1,15 @@
+/**
+ * 類型定義檔
+ * 
+ * 定義整個應用程式的 TypeScript 介面和類型：
+ * - 檔案解析相關類型（ParsedFile）
+ * - 比較選項和結果類型（CompareOptions, DiffResult）
+ * - 統計資訊類型（DiffStats）
+ * - 差異資料類型（RowDifference）
+ * - 匯出選項類型（ExportOptions）
+ * - 狀態管理類型（FilterState, FileUploadState）
+ */
+
 export interface ParsedFile {
   filename: string;
   headers: string[];

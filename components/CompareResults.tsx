@@ -1,3 +1,14 @@
+/**
+ * 比較結果組件
+ * 
+ * 管理和顯示檔案比較的完整流程：
+ * - 從 sessionStorage 讀取檔案資料
+ * - 執行檔案比較分析（支援 Web Worker）
+ * - 顯示載入、錯誤和成功狀態
+ * - 整合統計資訊、篩選控制和資料表格
+ * - 提供匯出功能
+ * - 響應式佈局設計
+ */
 'use client';
 
 import { useState, useEffect } from 'react';
