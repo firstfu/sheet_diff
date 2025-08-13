@@ -72,7 +72,12 @@ export class FileParser {
           }
 
           const worksheet = workbook.Sheets[sheetName];
-          const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 }) as unknown[][];
+          
+          // Get data with proper date formatting
+          const jsonData = XLSX.utils.sheet_to_json(worksheet, { 
+            header: 1,
+            raw: false
+          }) as unknown[][];
 
           if (jsonData.length === 0) {
             reject(new Error('Excel 檔案沒有資料'));
@@ -85,7 +90,20 @@ export class FileParser {
           const parsedData = dataRows.map((row) => {
             const rowData: Record<string, unknown> = {};
             headers.forEach((header, colIndex) => {
-              rowData[header] = row[colIndex] !== undefined ? String(row[colIndex]).trim() : '';
+              const cellValue = row[colIndex];
+              if (cellValue !== undefined) {
+                if (cellValue instanceof Date) {
+                  // Format date as YYYY-MM-DD
+                  rowData[header] = cellValue.toISOString().split('T')[0];
+                } else if (typeof cellValue === 'number' && this.isExcelDateSerial(cellValue)) {
+                  // Convert Excel date serial number to date
+                  rowData[header] = this.excelDateToString(cellValue);
+                } else {
+                  rowData[header] = String(cellValue).trim();
+                }
+              } else {
+                rowData[header] = '';
+              }
             });
             return rowData;
           });
@@ -119,6 +137,30 @@ export class FileParser {
       return cleanedRow;
     });
   }
+
+  private static isExcelDateSerial(value: number): boolean {
+    // Excel serial dates are between 1 (1900-01-01) and 2958465 (9999-12-31)
+    // But commonly they're in a much smaller range
+    return value >= 1 && value <= 2958465 && Math.floor(value) === value;
+  }
+
+  private static excelDateToString(serialNumber: number): string {
+    // Excel's epoch starts at 1900-01-01, but treats 1900 as a leap year (which it isn't)
+    // JavaScript Date constructor counts from 1970-01-01
+    const excelEpoch = new Date(1900, 0, 1);
+    
+    // Adjust for Excel's leap year bug and convert to milliseconds
+    const daysOffset = serialNumber - 1; // Excel starts counting from 1, not 0
+    const date = new Date(excelEpoch.getTime() + (daysOffset * 24 * 60 * 60 * 1000));
+    
+    // Adjust for the leap year bug (subtract 1 day for dates after Feb 28, 1900)
+    if (serialNumber >= 60) {
+      date.setDate(date.getDate() - 1);
+    }
+    
+    return date.toISOString().split('T')[0];
+  }
+
 
   static validateFile(file: File): { isValid: boolean; error?: string } {
     const maxSize = 50 * 1024 * 1024; // 50MB

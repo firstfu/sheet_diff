@@ -17,6 +17,26 @@ interface DataGridProps {
   filterState: FilterState;
 }
 
+// Helper function to format date values for display
+const formatDateForDisplay = (value: string): string => {
+  // Check if the value looks like a date (YYYY-MM-DD format)
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+  if (dateRegex.test(value)) {
+    try {
+      const date = new Date(value);
+      // Format as Chinese date format (YYYY年MM月DD日)
+      return date.toLocaleDateString('zh-TW', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).replace(/\//g, '/');
+    } catch {
+      return value;
+    }
+  }
+  return value;
+};
+
 // Status cell renderer component
 const StatusCellRenderer = (params: ICellRendererParams) => {
   const rowType = params.data?.type;
@@ -124,16 +144,17 @@ export function DataGrid({ diffResult, filterState }: DataGridProps) {
       cellClass: (params: CellClassParams) => getCellClassName(params.data, header),
       cellRenderer: (params: ICellRendererParams) => {
         const isChanged = params.data?.changedFields?.includes(header);
-        const value = params.value === null || params.value === undefined ? '' : String(params.value);
+        const rawValue = params.value === null || params.value === undefined ? '' : String(params.value);
+        const displayValue = formatDateForDisplay(rawValue);
         
         return (
           <div 
             className={`h-full flex items-center px-2 ${
               isChanged && params.data?.type === 'modified' ? 'font-medium' : ''
             }`}
-            title={value}
+            title={displayValue}
           >
-            <span className="truncate">{value}</span>
+            <span className="truncate">{displayValue}</span>
           </div>
         );
       }
