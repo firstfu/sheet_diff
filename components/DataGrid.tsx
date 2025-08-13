@@ -148,33 +148,35 @@ export function DataGrid({ diffResult, filterState }: DataGridProps) {
       cellClass: (params: CellClassParams) => getCellClassName(params.data, '_status')
     };
 
-    const dataColumns: ColDef[] = diffResult.headers.map(header => ({
-      field: header,
-      headerName: header,
-      resizable: true,
-      sortable: true,
-      filter: true,
-      cellClass: (params: CellClassParams) => getCellClassName(params.data, header),
-      cellRenderer: (params: ICellRendererParams) => {
-        const isChanged = params.data?.changedFields?.includes(header);
-        const rawValue = params.value === null || params.value === undefined ? '' : String(params.value);
-        const displayValue = formatDateForDisplay(rawValue);
-        
-        return (
-          <div 
-            className={`h-full flex items-center px-2 ${
-              isChanged && params.data?.type === 'modified' ? 'font-medium' : ''
-            }`}
-            title={displayValue}
-          >
-            <span className="truncate">{displayValue}</span>
-          </div>
-        );
-      }
-    }));
+    const dataColumns: ColDef[] = diffResult.headers
+      .filter(header => !filterState.hiddenColumns.includes(header))
+      .map(header => ({
+        field: header,
+        headerName: header,
+        resizable: true,
+        sortable: true,
+        filter: true,
+        cellClass: (params: CellClassParams) => getCellClassName(params.data, header),
+        cellRenderer: (params: ICellRendererParams) => {
+          const isChanged = params.data?.changedFields?.includes(header);
+          const rawValue = params.value === null || params.value === undefined ? '' : String(params.value);
+          const displayValue = formatDateForDisplay(rawValue);
+          
+          return (
+            <div 
+              className={`h-full flex items-center px-2 ${
+                isChanged && params.data?.type === 'modified' ? 'font-medium' : ''
+              }`}
+              title={displayValue}
+            >
+              <span className="truncate">{displayValue}</span>
+            </div>
+          );
+        }
+      }));
 
     return [statusColumn, ...dataColumns];
-  }, [diffResult.headers, getCellClassName]);
+  }, [diffResult.headers, getCellClassName, filterState.hiddenColumns]);
 
   if (rowData.length === 0) {
     return (

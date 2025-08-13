@@ -60,6 +60,7 @@ export interface FilterState {
   showOnlyDifferences: boolean;
   searchTerm: string;
   selectedDiffTypes: ('modified' | 'added' | 'deleted')[];
+  hiddenColumns: string[];
 }
 
 export type CellType = 'normal' | 'modified' | 'added' | 'deleted';

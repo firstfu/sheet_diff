@@ -1,15 +1,16 @@
 'use client';
 
 import { FilterState } from '@/lib/types';
-import { Search, Filter, X } from 'lucide-react';
+import { Search, Filter, X, Eye, EyeOff } from 'lucide-react';
 import { useState } from 'react';
 
 interface FilterControlsProps {
   filterState: FilterState;
   onFilterChange: (filterState: FilterState) => void;
+  availableColumns: string[];
 }
 
-export function FilterControls({ filterState, onFilterChange }: FilterControlsProps) {
+export function FilterControls({ filterState, onFilterChange, availableColumns }: FilterControlsProps) {
   const [showFilters, setShowFilters] = useState(false);
 
   const handleSearchChange = (value: string) => {
@@ -37,17 +38,30 @@ export function FilterControls({ filterState, onFilterChange }: FilterControlsPr
     });
   };
 
+  const handleColumnVisibilityToggle = (column: string) => {
+    const newHiddenColumns = filterState.hiddenColumns.includes(column)
+      ? filterState.hiddenColumns.filter(c => c !== column)
+      : [...filterState.hiddenColumns, column];
+    
+    onFilterChange({
+      ...filterState,
+      hiddenColumns: newHiddenColumns
+    });
+  };
+
   const clearFilters = () => {
     onFilterChange({
       showOnlyDifferences: false,
       searchTerm: '',
-      selectedDiffTypes: ['modified', 'added', 'deleted']
+      selectedDiffTypes: ['modified', 'added', 'deleted'],
+      hiddenColumns: []
     });
   };
 
   const hasActiveFilters = filterState.showOnlyDifferences || 
     filterState.searchTerm || 
-    filterState.selectedDiffTypes.length < 3;
+    filterState.selectedDiffTypes.length < 3 ||
+    filterState.hiddenColumns.length > 0;
 
   return (
     <div className="space-y-4">
@@ -132,6 +146,42 @@ export function FilterControls({ filterState, onFilterChange }: FilterControlsPr
                 </button>
               ))}
             </div>
+          </div>
+
+          <div>
+            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              欄位顯示設定：
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 max-h-32 overflow-y-auto">
+              {availableColumns.map((column) => {
+                const isHidden = filterState.hiddenColumns.includes(column);
+                return (
+                  <button
+                    key={column}
+                    onClick={() => handleColumnVisibilityToggle(column)}
+                    className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors text-left ${
+                      isHidden
+                        ? 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
+                        : 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
+                    }`}
+                  >
+                    {isHidden ? (
+                      <EyeOff className="h-3 w-3 mr-2 flex-shrink-0" />
+                    ) : (
+                      <Eye className="h-3 w-3 mr-2 flex-shrink-0" />
+                    )}
+                    <span className="truncate" title={column}>
+                      {column}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+            {filterState.hiddenColumns.length > 0 && (
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                已隱藏 {filterState.hiddenColumns.length} 個欄位
+              </p>
+            )}
           </div>
         </div>
       )}

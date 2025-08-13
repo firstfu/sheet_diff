@@ -20,7 +20,8 @@ export function CompareResults() {
   const [filterState, setFilterState] = useState<FilterState>({
     showOnlyDifferences: true,
     searchTerm: '',
-    selectedDiffTypes: ['modified', 'added', 'deleted']
+    selectedDiffTypes: ['modified', 'added', 'deleted'],
+    hiddenColumns: []
   });
 
   useEffect(() => {
@@ -200,6 +201,7 @@ export function CompareResults() {
               <FilterControls
                 filterState={filterState}
                 onFilterChange={setFilterState}
+                availableColumns={diffResult.headers}
               />
             </div>
           </div>
