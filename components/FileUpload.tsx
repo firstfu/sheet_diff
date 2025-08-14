@@ -104,6 +104,34 @@ export function FileUpload() {
     }
   };
 
+  const getAvailableHeaders = useCallback(() => {
+    if (!oldParsed || !newParsed) return [];
+    return Array.from(new Set([...oldParsed.headers, ...newParsed.headers]));
+  }, [oldParsed, newParsed]);
+
+  const getSuggestedPrimaryKeys = useCallback(() => {
+    const headers = getAvailableHeaders();
+    const suggestions: string[] = [];
+    
+    headers.forEach(header => {
+      const lowerHeader = header.toLowerCase();
+      if (
+        lowerHeader.includes('id') ||
+        lowerHeader.includes('編號') ||
+        lowerHeader.includes('代碼') ||
+        lowerHeader.includes('序號') ||
+        lowerHeader.includes('key') ||
+        lowerHeader.includes('code') ||
+        lowerHeader.includes('number') ||
+        lowerHeader === 'uuid'
+      ) {
+        suggestions.push(header);
+      }
+    });
+    
+    return suggestions;
+  }, [getAvailableHeaders]);
+
   const canCompare = oldParsed && newParsed && !isLoading;
 
   return (
@@ -144,26 +172,63 @@ export function FileUpload() {
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             比對選項
           </h3>
-          <div className="grid md:grid-cols-2 gap-4">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                checked={options.ignoreCase}
-                onChange={(e) => setOptions(prev => ({ ...prev, ignoreCase: e.target.checked }))}
-                className="mr-2"
-              />
-              <span className="text-sm text-gray-700 dark:text-gray-300">忽略大小寫差異</span>
-            </label>
+          <div className="space-y-4">
+            {/* 主鍵選擇 */}
+            {oldParsed && newParsed && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  主鍵欄位 (用於識別相同記錄)
+                </label>
+                <select
+                  value={options.primaryKey || ''}
+                  onChange={(e) => setOptions(prev => ({ 
+                    ...prev, 
+                    primaryKey: e.target.value || undefined 
+                  }))}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">使用行索引 (預設)</option>
+                  {getAvailableHeaders().map(header => (
+                    <option key={header} value={header}>
+                      {header} {getSuggestedPrimaryKeys().includes(header) ? '⭐' : ''}
+                    </option>
+                  ))}
+                </select>
+                {!options.primaryKey && (
+                  <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+                    ⚠️ 未選擇主鍵時，如果資料順序改變可能導致比對結果不準確
+                  </p>
+                )}
+                {getSuggestedPrimaryKeys().length > 0 && (
+                  <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                    ⭐ 表示建議的主鍵欄位
+                  </p>
+                )}
+              </div>
+            )}
             
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                checked={options.ignoreWhitespace}
-                onChange={(e) => setOptions(prev => ({ ...prev, ignoreWhitespace: e.target.checked }))}
-                className="mr-2"
-              />
-              <span className="text-sm text-gray-700 dark:text-gray-300">忽略空白字元差異</span>
-            </label>
+            {/* 其他選項 */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={options.ignoreCase}
+                  onChange={(e) => setOptions(prev => ({ ...prev, ignoreCase: e.target.checked }))}
+                  className="mr-2"
+                />
+                <span className="text-sm text-gray-700 dark:text-gray-300">忽略大小寫差異</span>
+              </label>
+              
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={options.ignoreWhitespace}
+                  onChange={(e) => setOptions(prev => ({ ...prev, ignoreWhitespace: e.target.checked }))}
+                  className="mr-2"
+                />
+                <span className="text-sm text-gray-700 dark:text-gray-300">忽略空白字元差異</span>
+              </label>
+            </div>
           </div>
         </div>
       )}
